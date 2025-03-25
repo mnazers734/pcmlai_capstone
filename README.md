@@ -51,10 +51,12 @@ Classification models, such as Logistic Regression, will be trained to predict t
 
 #### **EDA Results**
 
- **Baseline Connection Success Rates**<br/>
- The overall scanning success rate is 88%. This is baseline value for model comparsion.
+ **Baseline Connection Success Rates**<br/> 
 <div style="text-align: justify;">
-  <img src="./images/overall_scan_rate_success.png" alt="Overall vehicle scanning success rate" height="350" width="auto" style="margin-right: 20px;">
+  <p  style="font-size: 16px;">
+    The plot below show the overall scanning success rate accross all vehicle makes is 88%. This is baseline value for model comparsion. The plot also shows that domestic makes have the highest success scanning success rate. 
+  </p>
+  <img src="./images/overall_scan_rate_success.png" alt="Overall vehicle scanning success rate" height="450" width="auto" style="margin-right: 20px;">
 </div>  
 
 **Connection information by vehicle make**</br>
@@ -67,6 +69,16 @@ Classification models, such as Logistic Regression, will be trained to predict t
   </div>
   <div style="margin-bottom: 25px;">
     <img src="./images/top_makes_success_failures.png" alt="Scanning success for top 12 makes" height="450" width="auto" style="display: block;">
+  </div>
+</div>
+
+**Enhanced powertrain dominates other systems in number of scans**</br>
+<div style="text-align: justify;">
+  <p  style="font-size: 16px;">
+    When connecting to a vehicle, the scantool will connect to the powertrain system by default if the user does not select a system. The powertrain system is also the most common vehicle system, so it was expected that the enhanced power train system would account for the majority of scans - but not to the extent of 95%. The plot below shows that the enhanced powertrain system not only comprises 95% of scans but also has the lowest failure rate, while several non-powertrain systems show higher failure rates. The reasons for these high failure rates remain unclear due to the low scan numbers and warrant further investigation.
+  </p>
+  <div style="margin-bottom: 25px;">
+    <img src="./images/failure_rates_by_system.png" alt="Scanning success rate by make" height="450" width="auto" style="display: block; margin-bottom: 20px;">
   </div>
 </div>
 
@@ -87,6 +99,11 @@ Classification models, such as Logistic Regression, will be trained to predict t
     <img src="./images/success_rate_by_shop_type.png" alt="Comparison of scanning method success by vehicle make" height="450" width="auto" style="margin-right: 20px;">
   </div>
 
+  The chart below shows the distribution of the number of scans per customer. The distribution is right-skewed indicating that most customers use the service at lower levels, while a smaller number of customers use it much more frequently. Overall the mean number of scans per customer is 98 with a minimum number of scans being 1 and maximum number of scans 1486. 
+  <div style="display: flex; justify-content: flex-start; margin-bottom: 25px;">
+    <img src="./images/user_scan_distribution.png" alt="Comparison of scanning method success by vehicle make" height="400" width="auto" style="margin-right: 20px;">
+  </div>
+
   **Identifying vehicle systems with persistant scanning issues**
 <div style="text-align: justify;">
   <p  style="font-size: 16px;">
@@ -96,7 +113,7 @@ Classification models, such as Logistic Regression, will be trained to predict t
     <img src="./images/failure_percentage_by_vehicle_group.png" alt="Distribution of vehicle system failures" height="400" width="auto" style="margin-right: 20px;">
   </div>
   <p  style="font-size: 16px;">
-    A total of 1587 unique VIN/system combinations were identified as having only connection failures across the dataset. Among these, 389 VINs experienced a single failure with no successful scans, while 1533 VINs failed at only one shop - these may or may not be scantool issues. 54 VINs exhibited failures at multiple shops, suggesting that these vehicle systems are consistently problematic across different locations.<strong>The vehicle system connection failures shown below should be addressed as soon as possible and will provide a hugh improvement in scantool success rates.</strong>   
+    A total of 1587 unique VIN/system combinations were identified as having only connection failures across the dataset. Among these, 389 VINs experienced a single failure with no successful scans, while 1533 VINs failed at only one shop - these may or may not be scantool issues. 54 VINs exhibited failures at multiple shops, suggesting that these vehicle systems are consistently problematic across different locations. <strong>The vehicle system connection failures shown below should be addressed as soon as possible and will provide a hugh improvement in scantool success rates.</strong>   
   </p>
   <div style="display: flex; justify-content: flex-start; margin-bottom: 25px;">
     <img src="./images/no_successful_scans_num_shops.png" alt="Vehicles with no successful scans" height="500" width="auto" style="margin-right: 20px;">
@@ -143,6 +160,9 @@ Classification models, such as Logistic Regression, will be trained to predict t
 - **Investigate communication inconsistencies:**  
   Explore why some vehicle systems experience both high scanning success and failures. Extract additional vehicle details from the VIN—such as distinguishing between 2WD and 4WD—to improve prediction accuracy.
 
+   **Investigate customer usage by location:**  
+  Location data was acquired too late to be incorporated into this phase of the project. Future studies will explore how customer location influences vehicle scanning choices and whether it impacts scan success rates.
+
 - **Build enhanced models:**  
   Develop new models using additional information extracted from the VIN to address the low specificity of the current classification models.
 
@@ -150,10 +170,19 @@ Classification models, such as Logistic Regression, will be trained to predict t
   Deploy the model as a web-based service accessible via an API or dashboard. This will enable technical support to quickly input vehicle details and receive real-time predictions about scantool success.
 
 #### Outline of project
-- **[diag_usage_merging.ipynb](notebooks/diag_usage_merging.ipynb)** – Merges multiple datasets and anonymizes data
+**README.md** - main file with summary of findings
+**Images** - images used in the readme.md file
+
+**Notebooks**
+- **[diag_usage_merging.ipynb](notebooks/diag_usage_merging.ipynb)** – Merges multiple datasets and anonymizes data. **Note:** Original data sources used for merging contain customer information and are not included in the repo!
 - **[diag_usage_data_cleaning.ipynb](notebooks/diag_usage_data_cleaning.ipynb)** – Cleans merged dataset and outputs data to be used for EDA
 - **[diag_usage_eda.ipynb](notebooks/diag_usage_eda.ipynb)** – Performs exploratory data analysis on cleaned data to find patterns
 - **[diag_usage_models.ipynb](notebooks/diag_usage_models.ipynb)** – Trains a variaty of classification models to predict connection success and evaluates their performance
+
+**Datasets**
+- Data/DiagUsagePowerBI_merged.xlsx - merged dataset output from diag_usage_merging.ipynb
+- Data/DiagUsage_Cleaned.xlsx - cleaned dataset output from diag_usage_data_cleaning.ipynb. Used for EDA and model training
+
 
 #### Contact and Further Information
 ### [Michael Nasers - LinkedIn Profile](https://www.linkedin.com/in/michael-nasers-34527728/)
